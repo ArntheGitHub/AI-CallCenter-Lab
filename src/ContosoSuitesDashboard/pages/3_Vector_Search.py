@@ -49,13 +49,21 @@ def main():
             if query:
                 # Vectorize the query text.
                 # Exercise 3 Task 3 TODO #4: Get the vectorized query text by calling handle_query_vectorization.
-                
+                query_text = handle_query_vectorization(query)
                 # Perform the vector search.
                 # Exercise 3 Task 3 TODO #5: Get the vector search results by calling handle_vector_search.
-                
+                results = handle_vector_search(query_text, max_results, minimum_similarity_score)
                 # Display the results.
                 st.write("## Results")
                 # Exercise 3 Task 3 TODO #6: Display the results as a table.
+                if results.status_code == 200:
+                    results_json = results.json()
+                    if results_json:
+                        st.table(results_json)
+                    else:
+                        st.warning("No results found.")
+                else:
+                    st.error(f"An error occurred: {results.text}")
                 
             else:
                 st.warning("Please enter a query.")
